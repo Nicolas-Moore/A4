@@ -17,7 +17,6 @@ public class AdventureGameView extends GBFrame {
      *
      */
     private AdventureGameFactory f = null;
-    private boolean done = false;
     private static final long serialVersionUID = 1L;
     private FactoryProducer fp = new FactoryProducer();
 
@@ -40,9 +39,11 @@ public class AdventureGameView extends GBFrame {
 
     JButton grabButton = addButton("Grab an item", 12, 5, 1, 1);
     JButton dropButton = addButton("Drop an item", 13, 5, 1, 1);
-    JButton saveButton = addButton("Save", 14, 5, 1, 1);
-
     
+    
+    JButton saveButton = addButton("Save", 14, 5, 1, 1);    //added button for saving a game
+    JButton loadButton = addButton("Load", 15, 5, 1, 1);    //added button for loading a game
+
     JButton teleportButton;     // added button to use teleporter item if possesed
 
     JButton northButton = addButton("North", 12, 2, 1, 1);
@@ -57,11 +58,10 @@ public class AdventureGameView extends GBFrame {
     // Constructor-----------------------------------------------
     public AdventureGameView() {
         // get what the user would like to do (what lvl to play or load game)
-        while (!done) {
-            getSelection();
-        }
+        getSelection();
+
         // if they went with lvl 1 difficulty add the teleport button 
-        if(f.getClass() == Lvl1Factory.class){
+        if (f.getClass() == Lvl1Factory.class) {
             teleportButton = addButton("Teleport", 12, 1, 1, 1);
         }
         setTitle("Adventure Game");
@@ -89,11 +89,13 @@ public class AdventureGameView extends GBFrame {
             actionMessage = model.goEast();
         } else if (buttonObj == westButton) {
             actionMessage = model.goWest();
-            
-        // added logic for what to do if teleport button is clicked
+
+        } else if (buttonObj == saveButton) {
+            model.saveGame();
+
+            // added logic for what to do if teleport button is clicked
         } else if (buttonObj == teleportButton) {
-                model.teleport();
-            
+            model.teleport();
 
         } else if (buttonObj == grabButton) {
 
@@ -118,25 +120,18 @@ public class AdventureGameView extends GBFrame {
      */
     private void getSelection() {
         Object[] options = {"Level 0",
-            "Level 1",
-            "Load"};
+            "Level 1",};
         Component frame = null;
         int n = JOptionPane.showOptionDialog(frame,
-                "Choose which difficulty level you would like to play, "
-                + "or to load a game",
+                "Choose which difficulty level you would like to play, ",
                 "Select difficulty",
-                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
-                options[2]);
-        if (n == 0 || n == 1) {
-            f = fp.getFactory(n);
-            done = true;
-        } else {
+                options[1]);
+        f = fp.getFactory(n);
 
-        }
-        //return n;
     }
 
     public static void main(String[] args) {

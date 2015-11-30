@@ -14,8 +14,9 @@ public class AdventureGameModelFacade {
     //
     // These methods and fields are left as exercises.
     Player thePlayer;
-    //Adventure theCave;
+    AdventureGameFactory f;
     Room startRm;
+    SavedGame sg = null;
 
     /* 
      * Method to initialize the game and interface
@@ -23,12 +24,15 @@ public class AdventureGameModelFacade {
      * Implemented method
      */
     // made facade take a factory object as well to know what Lvl of adventure to create
-    AdventureGameModelFacade(AdventureGameFactory f) {
+    AdventureGameModelFacade(AdventureGameFactory inF) {
         thePlayer = new Player();
-        //theCave = new Adventure();
+        f = inF;
+        //create lvl based on the type of factory passed in
         startRm = f.createLvl();
         thePlayer.setRoom(startRm);
     }
+    
+    //maybe make new constructor for saved games
 
     /*
      * Method to process a user 'up' input
@@ -204,8 +208,14 @@ public class AdventureGameModelFacade {
     public String getItems() {
         return thePlayer.showMyThings();
     }
+    
+    /*
+    Method to create a new saved game
+    */
+    
+    public void saveGame(){
+        sg = new SavedGame(thePlayer, thePlayer.getLoc(), f);
+    }
 
- // Surely you will need other methods to deal with
-    // picking up and dropping things.
-    // Surely not.
+ 
 }
