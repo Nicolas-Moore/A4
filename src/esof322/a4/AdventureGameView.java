@@ -57,7 +57,7 @@ public class AdventureGameView extends GBFrame {
 
     // Constructor-----------------------------------------------
     public AdventureGameView() {
-        // get what the user would like to do (what lvl to play or load game)
+        // get what the user would like to do (what lvl to play)
         getSelection();
 
         // if they went with lvl 1 difficulty add the teleport button 

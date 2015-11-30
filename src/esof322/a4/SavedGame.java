@@ -11,7 +11,7 @@ package esof322.a4;
  */
 public class SavedGame  {
 
-    public SavedGame(Player p, Room curLoc, AdventureGameFactory f){
+    public SavedGame(Player p, Room curLoc, Item[] items){
         
     }
 }

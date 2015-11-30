@@ -214,7 +214,11 @@ public class AdventureGameModelFacade {
     */
     
     public void saveGame(){
-        sg = new SavedGame(thePlayer, thePlayer.getLoc(), f);
+        sg = new SavedGame(thePlayer, thePlayer.getLoc(), thePlayer.getMyThings());
+    }
+    
+    public void loadGame(SavedGame g){
+        //get info from saved game and set variables
     }
 
  
