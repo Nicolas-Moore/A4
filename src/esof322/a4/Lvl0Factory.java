@@ -9,7 +9,7 @@ package esof322.a4;
  *
  * @author Nick
  */
-public class Lvl0Factory implements AdventureGameFactory {
+public class Lvl0Factory implements AdventureGameFactory, java.io.Serializable {
     private Room entrance;
 
     @Override

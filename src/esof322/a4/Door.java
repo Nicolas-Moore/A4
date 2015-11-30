@@ -17,7 +17,7 @@ package esof322.a4;
 
 // class Door
 
-public class Door implements CaveSite {
+public class Door implements CaveSite, java.io.Serializable {
   /** In this implementation doors are always locked.
       A player must have the correct key to get through
       a door.  Doors automatically lock after a player

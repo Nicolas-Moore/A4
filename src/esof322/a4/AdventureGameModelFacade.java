@@ -5,6 +5,15 @@
 package esof322.a4;
 
 import java.awt.Component;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 
 public class AdventureGameModelFacade {
@@ -16,7 +25,8 @@ public class AdventureGameModelFacade {
     Player thePlayer;
     AdventureGameFactory f;
     Room startRm;
-    SavedGame sg = null;
+    //File save = new File("myObject.data");
+
 
     /* 
      * Method to initialize the game and interface
@@ -31,7 +41,7 @@ public class AdventureGameModelFacade {
         startRm = f.createLvl();
         thePlayer.setRoom(startRm);
     }
-    
+
     //maybe make new constructor for saved games
 
     /*
@@ -208,18 +218,59 @@ public class AdventureGameModelFacade {
     public String getItems() {
         return thePlayer.showMyThings();
     }
+
+    /*
+     Method to create a new saved game
+     */
+    public void saveGame() throws IOException {
+        //initialize output stream
+        FileOutputStream f_out = null;                                          
+        try {
+            // Write to disk with FileOutputStream
+            f_out = new FileOutputStream(new File("myObject.data"));            
+            // Write object with ObjectOutputStream
+            ObjectOutputStream obj_out = new ObjectOutputStream(f_out);
+            // Write the current state of the player out to disk
+            obj_out.writeObject(thePlayer);
+            //catch any errors
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                f_out.close();
+            } catch (IOException ex) {
+                Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
     
     /*
-    Method to create a new saved game
+    Method to load a saved game
     */
-    
-    public void saveGame(){
-        sg = new SavedGame(thePlayer, thePlayer.getLoc(), thePlayer.getMyThings());
-    }
-    
-    public void loadGame(SavedGame g){
-        //get info from saved game and set variables
+
+    public void loadGame() {
+         FileInputStream f_in = null;
+        try {
+            // Read from disk using FileInputStream
+            f_in = new FileInputStream("myObject.data");
+            // Read object using ObjectInputStream
+            ObjectInputStream obj_in = new ObjectInputStream(f_in);
+            // Read the players saved state from the file
+            thePlayer  = (Player) obj_in.readObject();
+            //catch any errors
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                f_in.close();
+            } catch (IOException ex) {
+                Logger.getLogger(AdventureGameModelFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
- 
 }

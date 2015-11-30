@@ -28,7 +28,7 @@ import java.util.ListIterator;
  * Added an instance variable to display an optional message upon entering
  *  a room.
  */
-public class Room implements CaveSite {
+public class Room implements CaveSite, java.io.Serializable {
 
   private String description;
   

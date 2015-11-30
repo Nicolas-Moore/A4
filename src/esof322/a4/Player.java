@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * 
  * Changed myItems to an arraylist
  */
-public class Player {
+public class Player implements  java.io.Serializable {
 
     private Room myLoc;
 

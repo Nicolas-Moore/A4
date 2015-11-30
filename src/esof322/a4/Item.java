@@ -17,7 +17,7 @@ package esof322.a4;
 
 // class Item
 
-public class Item {
+public class Item  implements  java.io.Serializable {
 
   private String description;
 

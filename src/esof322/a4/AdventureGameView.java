@@ -10,6 +10,9 @@ import BreezySwing.*;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AdventureGameView extends GBFrame {
 
@@ -39,8 +42,7 @@ public class AdventureGameView extends GBFrame {
 
     JButton grabButton = addButton("Grab an item", 12, 5, 1, 1);
     JButton dropButton = addButton("Drop an item", 13, 5, 1, 1);
-    
-    
+
     JButton saveButton = addButton("Save", 14, 5, 1, 1);    //added button for saving a game
     JButton loadButton = addButton("Load", 15, 5, 1, 1);    //added button for loading a game
 
@@ -90,11 +92,18 @@ public class AdventureGameView extends GBFrame {
         } else if (buttonObj == westButton) {
             actionMessage = model.goWest();
 
+            //added logic for what to do if save button is clicked
         } else if (buttonObj == saveButton) {
-            model.saveGame();
-
-            // added logic for what to do if teleport button is clicked
-        } else if (buttonObj == teleportButton) {
+            try {
+                model.saveGame();
+            } catch (IOException ex) {
+                Logger.getLogger(AdventureGameView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //added logic for what to do if load button is clicked
+        } else if (buttonObj == loadButton) {
+            model.loadGame();
+        } //added logic for what to do if teleport button is clicked
+        else if (buttonObj == teleportButton) {
             model.teleport();
 
         } else if (buttonObj == grabButton) {
@@ -120,16 +129,17 @@ public class AdventureGameView extends GBFrame {
      */
     private void getSelection() {
         Object[] options = {"Level 0",
-            "Level 1",};
+            "Level 1"};
         Component frame = null;
         int n = JOptionPane.showOptionDialog(frame,
-                "Choose which difficulty level you would like to play, ",
+                "Choose which difficulty level you would like to play, or load a saved game ",
                 "Select difficulty",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
                 options[1]);
+
         f = fp.getFactory(n);
 
     }
