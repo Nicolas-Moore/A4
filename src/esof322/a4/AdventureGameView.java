@@ -89,7 +89,8 @@ public class AdventureGameView extends GBFrame {
             actionMessage = model.goEast();
         } else if (buttonObj == westButton) {
             actionMessage = model.goWest();
-
+            
+        // added logic for what to do if teleport button is clicked
         } else if (buttonObj == teleportButton) {
                 model.teleport();
             

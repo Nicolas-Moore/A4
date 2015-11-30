@@ -90,16 +90,31 @@ public class AdventureGameModelFacade {
     public void teleport() {
         Item[] contents = thePlayer.getMyThings();
         boolean haveTele = false;
+        Component frame = null;
+        //make sure user has item
         for (int i = 0; i < contents.length; i++) {
             if (contents[i].getClass() == Teleporter.class) {
                 haveTele = true;
                 break;
             }
         }
+        //make sure they really want to teleport
         if (haveTele) {
-            thePlayer.setLoc(startRm);
+            Object[] options = {"Yes, please",
+                "No way!"};
+            int n = JOptionPane.showOptionDialog(frame,
+                    "Are you sure? This will take you back to the entrance.",
+                    "Teleport",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    options,
+                    options[0]);
+
+            if (n == 0) {
+                thePlayer.setLoc(startRm);
+            }
         } else {
-            Component frame = null;
             JOptionPane.showMessageDialog(frame,
                     "You must find a strange gadget to do that.");
         }
