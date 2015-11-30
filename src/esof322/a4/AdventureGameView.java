@@ -17,7 +17,7 @@ public class AdventureGameView extends GBFrame {
      *
      */
     private AdventureGameFactory f = null;
-    //private int lvlSelected;
+    private boolean done = false;
     private static final long serialVersionUID = 1L;
     private FactoryProducer fp = new FactoryProducer();
 
@@ -41,7 +41,9 @@ public class AdventureGameView extends GBFrame {
     JButton grabButton = addButton("Grab an item", 12, 5, 1, 1);
     JButton dropButton = addButton("Drop an item", 13, 5, 1, 1);
     JButton saveButton = addButton("Save", 14, 5, 1, 1);
-    JButton restoreButton = addButton("Load", 15, 5, 1, 1);
+
+    
+    JButton teleportButton;     // added button to use teleporter item if possesed
 
     JButton northButton = addButton("North", 12, 2, 1, 1);
     JButton southButton = addButton("South", 14, 2, 1, 1);
@@ -54,27 +56,15 @@ public class AdventureGameView extends GBFrame {
 
     // Constructor-----------------------------------------------
     public AdventureGameView() {
-        //AdventureGameFactory f = null;
-        //getLvl();
-//        switch(lvlSelected){
-//            case 0:
-//                f = new Lvl0Factory();
-//                break;
-//                
-//            case 1:
-//                f = new Lvl1Factory();
-//                break;
-//                
-//            case 2:
-//                // implement restore method
-//                break;
-//                
-//            default:
-//                break;
-//        }
+        // get what the user would like to do (what lvl to play or load game)
+        while (!done) {
+            getSelection();
+        }
+        // if they went with lvl 1 difficulty add the teleport button 
+        if(f.getClass() == Lvl1Factory.class){
+            teleportButton = addButton("Teleport", 12, 1, 1, 1);
+        }
         setTitle("Adventure Game");
-        //getLvl();
-        f = fp.getFactory(getLvl());
         model = new AdventureGameModelFacade(f);
         viewArea.setEditable(false);
         carryingArea.setEditable(false);
@@ -99,6 +89,11 @@ public class AdventureGameView extends GBFrame {
             actionMessage = model.goEast();
         } else if (buttonObj == westButton) {
             actionMessage = model.goWest();
+
+        } else if (buttonObj == teleportButton) {
+                model.teleport();
+            
+
         } else if (buttonObj == grabButton) {
 
             model.grab();
@@ -117,27 +112,33 @@ public class AdventureGameView extends GBFrame {
         carryingArea.setText(model.getItems());
     }
 
-    private int getLvl() {
+    /*
+     Method to get what lvl difficulty the user would like or if they want to load a saved game.
+     */
+    private void getSelection() {
         Object[] options = {"Level 0",
             "Level 1",
             "Load"};
         Component frame = null;
         int n = JOptionPane.showOptionDialog(frame,
-                "Would you like some green eggs to go "
-                + "with that ham?",
-                "A Silly Question",
+                "Choose which difficulty level you would like to play, "
+                + "or to load a game",
+                "Select difficulty",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
                 options,
                 options[2]);
-        System.out.println(n);
-        //f = fp.getFactory(n);
-        return n;
+        if (n == 0 || n == 1) {
+            f = fp.getFactory(n);
+            done = true;
+        } else {
+
+        }
+        //return n;
     }
 
     public static void main(String[] args) {
-        //getLvl();
         JFrame view = new AdventureGameView();
         view.setSize(800, 600); /* was 400, 250  */
 
