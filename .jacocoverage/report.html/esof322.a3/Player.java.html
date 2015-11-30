@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Player.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;A3&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">esof322.a3</a> &gt; <span class="el_source">Player.java</span></div><h1>Player.java</h1><pre class="source lang-java linenums">
+/*
+* ESOF322, Project 2
+* Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
+*/
+package esof322.a3;
+
+import java.util.ArrayList;
+
+/**
+ * Adventure Game Program Code Copyright (c) 1999 James M. Bieman
+ *
+ * To compile: javac AdventureGame.java To run: java AdventureGame
+ *
+ * The main routine is AdventureGame.main
+ * 
+ * Changed myItems to an arraylist
+ */
+<span class="fc" id="L19">public class Player {</span>
+
+    private Room myLoc;
+
+<span class="fc" id="L23">    private ArrayList&lt;Item&gt; myItems = new ArrayList&lt;Item&gt;(); </span>
+
+<span class="fc" id="L25">    private int itemCount = 0;</span>
+
+    public void setRoom(Room r) {
+<span class="fc" id="L28">        myLoc = r;</span>
+<span class="fc" id="L29">    }</span>
+
+    public String look() {
+<span class="nc" id="L32">        return myLoc.getDesc();</span>
+    }
+    
+    // Convert from void to String method
+    //  This allows door/wall and room entry messages
+    //  to be printed by the calling method rather than the
+    //  room object, preserving model/view separation
+    public String go(int direction) {
+<span class="fc" id="L40">        return myLoc.exit(direction, this);</span>
+    }
+    
+    // Changed to work with arraylist
+    public void pickUp(Item i) {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (itemCount &lt; 2) {</span>
+<span class="fc" id="L46">            myItems.add(i);</span>
+<span class="fc" id="L47">            itemCount++;</span>
+<span class="fc" id="L48">            myLoc.removeItem(i);</span>
+        }
+<span class="fc" id="L50">    }</span>
+
+    /* Method to check if player has a particular item
+     *
+     * Added some brackets
+     */
+    public boolean haveItem(Item itemToFind) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (int n = 0; n &lt; itemCount; n++) {</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">            if (myItems.get(n) == itemToFind) {</span>
+<span class="fc" id="L59">                return true;</span>
+            }
+        }
+<span class="fc" id="L62">        return false;</span>
+    }
+
+    // Changed to work with an arraylist
+    public void drop(int itemNum) {
+<span class="fc bfc" id="L67" title="All 6 branches covered.">        if (itemNum &gt; 0 &amp; itemNum &lt;= itemCount) {</span>
+<span class="pc bpc" id="L68" title="1 of 3 branches missed.">            switch (itemNum) {</span>
+                case 1: {
+<span class="fc" id="L70">                    myLoc.addItem(myItems.get(0));</span>
+<span class="fc" id="L71">                    myItems.remove(0);</span>
+<span class="fc" id="L72">                    itemCount--;</span>
+<span class="fc" id="L73">                    break;</span>
+                }
+                case 2: {
+<span class="fc" id="L76">                    myLoc.addItem(myItems.get(1));</span>
+<span class="fc" id="L77">                    myItems.remove(1);</span>
+<span class="fc" id="L78">                    itemCount--;</span>
+                    break;
+                }
+            }
+        }
+<span class="fc" id="L83">    }</span>
+
+    public void setLoc(Room r) {
+<span class="fc" id="L86">        myLoc = r;</span>
+<span class="fc" id="L87">    }</span>
+
+    public Room getLoc() {
+<span class="fc" id="L90">        return myLoc;</span>
+    }
+
+    public String showMyThings() {
+<span class="nc" id="L94">        String outString = &quot;&quot;;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (itemCount == 0) {</span>
+<span class="nc" id="L96">            outString = &quot;You have no items.&quot;;</span>
+        } else {
+<span class="nc bnc" id="L98" title="All 2 branches missed.">            for (int n = 0; n &lt; itemCount; n++) {</span>
+<span class="nc" id="L99">                outString = outString + Integer.toString(n + 1) + &quot;: &quot;</span>
+<span class="nc" id="L100">                        + myItems.get(n).getDesc() + &quot; &quot;;</span>
+            }
+        }
+<span class="nc" id="L103">        return outString;</span>
+    }
+
+    /* Method to return an array of the items held by player
+     *
+     * Implemented method
+     */
+    public Item[] getMyThings() {
+<span class="fc" id="L111">        Item[] myThings = new Item[myItems.size()];</span>
+<span class="fc" id="L112">        myThings = myItems.toArray(myThings);</span>
+<span class="fc" id="L113">        return myThings;</span>
+    }
+
+    public boolean handsFull() {
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        return itemCount == 2;</span>
+    }
+
+    public boolean handsEmpty() {
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        return itemCount == 0;</span>
+    }
+
+    public int numItemsCarried() {
+<span class="nc" id="L125">        return itemCount;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

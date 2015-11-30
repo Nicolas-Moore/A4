@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdventureGameView.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;A3&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">esof322.a3</a> &gt; <span class="el_source">AdventureGameView.java</span></div><h1>AdventureGameView.java</h1><pre class="source lang-java linenums">/*
+* ESOF322, Project 2
+* Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
+*/
+
+package esof322.a3;
+
+import javax.swing.*;
+
+
+import BreezySwing.*;
+
+public class AdventureGameView extends GBFrame{
+
+   /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+// Window objects --------------------------------------
+<span class="nc" id="L21">   JLabel welcomeLabel =</span>
+<span class="nc" id="L22">     addLabel(&quot;Welcome to the Adventure Game &quot; + </span>
+              &quot;(inspired by an old game called the Colossal Cave Adventure).&quot; +
+            &quot; Java implementation Copyright (c) 1999-2012 by James M. Bieman&quot;,
+	    1,1,5,1);
+   
+<span class="nc" id="L27">   JLabel viewLable = addLabel (&quot;Your View: &quot;,2,1,1,1);</span>
+<span class="nc" id="L28">   JTextArea viewArea = addTextArea(&quot;Start&quot;,3,1,4,3); </span>
+
+<span class="nc" id="L30">   JLabel carryingLable = addLabel (&quot;You are carying: &quot;,6,1,1,1);</span>
+<span class="nc" id="L31">   JTextArea carryingArea = addTextArea(&quot;Nothing&quot;,7,1,4,3);</span>
+
+<span class="nc" id="L33">   JLabel separator1 = addLabel</span>
+<span class="nc" id="L34">   (&quot;-----------------------------------------------------------------&quot;</span>
+	 , 10,1,4,1);
+
+
+<span class="nc" id="L38">   JLabel choiceLabel    = addLabel</span>
+<span class="nc" id="L39">      (&quot;Choose a direction, pick-up, or drop an item&quot; ,11,1,5,1);</span>
+
+<span class="nc" id="L41">   JButton grabButton = addButton (&quot;Grab an item&quot;, 12, 5,1,1);</span>
+<span class="nc" id="L42">   JButton dropButton = addButton (&quot;Drop an item&quot;, 13, 5,1,1);</span>
+   
+<span class="nc" id="L44">   JButton northButton = addButton (&quot;North&quot;, 12,2,1,1);</span>
+<span class="nc" id="L45">   JButton southButton = addButton (&quot;South&quot;, 14,2,1,1);</span>
+<span class="nc" id="L46">   JButton eastButton = addButton (&quot;East&quot;,   13,3,1,1);</span>
+<span class="nc" id="L47">   JButton westButton = addButton (&quot;West&quot;,   13,1,1,1);</span>
+<span class="nc" id="L48">   JButton upButton = addButton (&quot;Up&quot;, 12,3,1,1);</span>
+<span class="nc" id="L49">   JButton downButton = addButton (&quot;Down&quot;, 14,3,1,1);</span>
+
+   AdventureGameModelFacade model;
+   
+   // Constructor-----------------------------------------------
+        
+<span class="nc" id="L55">   public AdventureGameView(){</span>
+<span class="nc" id="L56">      setTitle (&quot;Adventure Game&quot;);</span>
+<span class="nc" id="L57">      model = new AdventureGameModelFacade();</span>
+<span class="nc" id="L58">      viewArea.setEditable (false);</span>
+<span class="nc" id="L59">      carryingArea.setEditable (false);</span>
+<span class="nc" id="L60">      displayCurrentInfo(&quot;&quot;);</span>
+
+      
+<span class="nc" id="L63">   } </span>
+   
+   
+   // buttonClicked method--------------------------------------
+
+   // Modified method to precess messages from the movement
+   //  buttons
+   public void buttonClicked (JButton buttonObj){
+<span class="nc" id="L71">      String actionMessage = &quot;&quot;;</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">      if (buttonObj == upButton)</span>
+<span class="nc" id="L73">         actionMessage = model.goUp();</span>
+
+<span class="nc bnc" id="L75" title="All 2 branches missed.">      else if (buttonObj == downButton)</span>
+<span class="nc" id="L76">	 actionMessage = model.goDown();</span>
+
+<span class="nc bnc" id="L78" title="All 2 branches missed.">      else if (buttonObj == northButton)</span>
+<span class="nc" id="L79">	 actionMessage = model.goNorth();</span>
+
+<span class="nc bnc" id="L81" title="All 2 branches missed.">      else if (buttonObj == southButton)</span>
+<span class="nc" id="L82">	 actionMessage = model.goSouth();</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">      else if (buttonObj == eastButton)</span>
+<span class="nc" id="L85">	 actionMessage = model.goEast();</span>
+
+<span class="nc bnc" id="L87" title="All 2 branches missed.">      else if (buttonObj == westButton)</span>
+<span class="nc" id="L88">	 actionMessage = model.goWest();</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">      else if (buttonObj == grabButton){</span>
+     
+<span class="nc" id="L92">	 model.grab();</span>
+}
+<span class="nc bnc" id="L94" title="All 2 branches missed.">      else if (buttonObj == dropButton)</span>
+<span class="nc" id="L95">	 model.drop();</span>
+
+<span class="nc" id="L97">      displayCurrentInfo(actionMessage);</span>
+<span class="nc" id="L98">  }</span>
+      
+   
+   // Private methods-------------------------------------------
+
+   // Modified method to accept String argument. This will allow
+   //  it to display a movement message from a wall, door or room
+   private void displayCurrentInfo(String message){
+<span class="nc" id="L106">	 viewArea.setText(message + model.getView());</span>
+<span class="nc" id="L107">	 carryingArea.setText(model.getItems());</span>
+<span class="nc" id="L108">	 }</span>
+
+  
+   
+   public static void main (String[] args){
+<span class="nc" id="L113">      JFrame view = new AdventureGameView();</span>
+<span class="nc" id="L114">      view.setSize (800, 600); /* was 400, 250  */             </span>
+<span class="nc" id="L115">      view.setVisible(true);    </span>
+<span class="nc" id="L116">   }                    </span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

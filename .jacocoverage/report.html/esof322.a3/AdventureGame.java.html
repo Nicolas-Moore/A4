@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdventureGame.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;A3&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">esof322.a3</a> &gt; <span class="el_source">AdventureGame.java</span></div><h1>AdventureGame.java</h1><pre class="source lang-java linenums">/*
+ * ESOF322, Project 2
+ * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
+ */
+ 
+ package esof322.a3;
+
+/**  Adventure Game  Program Code
+     Copyright (c) 1999 James M. Bieman
+
+     To compile: javac cs314.a2.AdventureGame.java
+     To run:     java cs314.a2.AdventureGame
+     The main routine is AdventureGame.main
+				    
+     The AdventureGame is a Java implementation of the old text based
+     adventure game from long ago.  The design was adapted from
+     one in Gamma, Helm, Johnson, Vlissides (The Gang of Four),
+     &quot;Design Patterns: Elements of Reusable Object-Oriented Software&quot;,
+     Addison-Wesley, 1997.
+
+     To really be consistent with the old game we would need a
+     much larger cave system with a hundred or so rooms, and a 
+     more &quot;understanding&quot; user interface.
+
+     The old game just put you near the cave, displayed the &quot;view&quot;
+     as text, and offered no instructions.  If you gave a command that
+     it understood, you could proceed.  If your command could not
+     be interpreted, nothing would happen.  Rooms were never identified
+     precisely; your only clues came from the descriptions.  You would
+     have to remember or create your own map of the cave system to 
+     find your way around.  Sometimes you could not return exactly
+     the way you came.  An exit to the east may not enter the west
+     side of the &quot;adjacent room&quot;; the passage might curve.
+
+     Perhaps, this implementation can evolve to be closer to
+     the original game, or even go beyond it. 
+
+     Jim Bieman
+     September 1999.
+
+
+/**  Adventure Game  Program Code
+Copyright (c) 1999 James M. Bieman
+Updated August 2010
+- Code is put into package cs314.a2 to match current CS314 coding standards.
+- Obsolete Vector is replaced with ArrayList with type parameters.
+- Deletion of some unused variables.
+
+To compile: javac cs314.a2.AdventureGame.java
+To run:     java cs314.a2.AdventureGame
+
+The main routine is AdventureGame.main
+		    
+		    **/
+
+import java.io.*;
+
+
+<span class="nc" id="L59">public class AdventureGame {</span>
+
+
+  /** Our system-wide internal representation of directions
+      is integers.  Here, we convert input string directions
+      into integers.  Internally, we use integers 0-9 as
+      directions throughout the program.  This is a bit of
+      a cludge, but is simpler for now than creating a Direction
+      class.  I use this cludge because Java in 1999 did not have
+      an enumerated data type.  */
+  private int convertDirection(String input){
+<span class="nc" id="L70">   char d = input.charAt(0);</span>
+<span class="nc" id="L71">   int theDirection = 9999;</span>
+<span class="nc bnc" id="L72" title="All 7 branches missed.">   switch(d){</span>
+<span class="nc" id="L73">       case 'n': case 'N': theDirection = 0;break;</span>
+<span class="nc" id="L74">       case 's': case 'S': theDirection = 1;break;</span>
+<span class="nc" id="L75">       case 'e': case 'E': theDirection = 2;break;</span>
+<span class="nc" id="L76">       case 'w': case 'W': theDirection = 3;break;</span>
+<span class="nc" id="L77">       case 'u': case 'U': theDirection = 4;break;</span>
+<span class="nc" id="L78">       case 'd': case 'D': theDirection = 5;break;</span>
+    }
+<span class="nc" id="L80">    return theDirection;</span>
+  }
+
+  /** choosePickupItem determines the specific item
+      that a player wants to pick up.   */
+  private Item choosePickupItem(Player p,  BufferedReader keyB)
+				 throws IOException{
+<span class="nc" id="L87">   Item[] contentsArray = (p.getLoc()).getRoomContents();</span>
+<span class="nc" id="L88">   String inputString = &quot;prepare&quot;;</span>
+<span class="nc" id="L89">   int theChoice = -1;</span>
+
+   do {   
+<span class="nc" id="L92">       System.out.println(&quot;The room has:&quot;);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">       for (int i = 0; i &lt; contentsArray.length ; i++)</span>
+<span class="nc" id="L94">       System.out.println((i+1) + &quot;: &quot;</span>
+<span class="nc" id="L95">			     + contentsArray[i].getDesc()); </span>
+<span class="nc" id="L96">       System.out.print(&quot;Enter the number of the item to grab: &quot;);</span>
+<span class="nc" id="L97">       inputString = keyB.readLine();</span>
+<span class="nc" id="L98">       System.out.println('\n');</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">       if (inputString.equals(&quot;&quot;)) inputString = &quot; &quot;;</span>
+       try  {
+<span class="nc" id="L101">	    theChoice = Integer.parseInt(inputString);</span>
+<span class="nc" id="L102">	    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L103">	       System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L104">	       theChoice = -1;</span>
+<span class="nc" id="L105">	    }</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">       if (theChoice &lt; 0 || theChoice &gt; contentsArray.length)</span>
+<span class="nc" id="L107">	  System.out.print(&quot;That item is not in the room.&quot;);</span>
+<span class="nc bnc" id="L108" title="All 4 branches missed.">       } while (theChoice &lt; 0 || theChoice &gt; contentsArray.length); </span>
+
+<span class="nc" id="L110">   return contentsArray[theChoice-1];</span>
+
+  }
+
+  /** chooseDropItem  determines the specific item
+      that a player wants to drop */
+  private int chooseDropItem(Player p,  BufferedReader keyB)
+     throws IOException{
+<span class="nc" id="L118">     String inputString = &quot;prepare&quot;;</span>
+<span class="nc" id="L119">     int theChoice = -1;</span>
+
+     do {
+<span class="nc" id="L122">         System.out.println(&quot;You are carrying: &quot; +</span>
+<span class="nc" id="L123">				p.showMyThings() + '\n');</span>
+<span class="nc" id="L124">         System.out.print(&quot;Enter the number of the item to drop: &quot; );</span>
+<span class="nc" id="L125">         inputString = keyB.readLine();</span>
+<span class="nc" id="L126">         try  {theChoice = Integer.parseInt(inputString);}</span>
+<span class="nc" id="L127">	 catch (NumberFormatException e) {</span>
+<span class="nc" id="L128">	       System.out.println(&quot;Invalid input.&quot;);</span>
+<span class="nc" id="L129">	       theChoice = -1;</span>
+<span class="nc" id="L130">	       }</span>
+<span class="nc bnc" id="L131" title="All 4 branches missed.">         if (theChoice &lt; 0 || theChoice &gt; p.numItemsCarried())</span>
+<span class="nc" id="L132">	    System.out.print(&quot;Invalid choice.&quot;);</span>
+<span class="nc bnc" id="L133" title="All 4 branches missed.">        } while (theChoice &lt; 0 || theChoice &gt; p.numItemsCarried());</span>
+
+<span class="nc" id="L135">    return theChoice;</span>
+  }
+
+  // Changed movement so that door and wall messages are printed
+  //  by the calling method, rather than by the rooms. This preserves
+  //  model/view separation
+  public void startQuest() throws IOException{
+<span class="nc" id="L142">   Player thePlayer = new Player();</span>
+<span class="nc" id="L143">   Adventure theCave = new Adventure();</span>
+<span class="nc" id="L144">   Room startRm = theCave.createAdventure();</span>
+<span class="nc" id="L145">   thePlayer.setRoom(startRm);</span>
+
+   /** Create the keyboard to control the game; we only need one */
+<span class="nc" id="L148">    BufferedReader keyboard</span>
+	  = new BufferedReader(new InputStreamReader(System.in));
+<span class="nc" id="L150">    String inputString = &quot;prepare&quot;;</span>
+
+    /* The main query user, get command, interpret, execute cycle. */ 
+<span class="nc bnc" id="L153" title="All 2 branches missed.">    while (inputString.charAt(0)!='q') {</span>
+<span class="nc" id="L154">       System.out.println(thePlayer.look());</span>
+<span class="nc" id="L155">       System.out.println(&quot;You are carrying: &quot; +</span>
+<span class="nc" id="L156">			   thePlayer.showMyThings() + '\n');</span>
+        /* get next move */
+<span class="nc" id="L158">	int direction = 9;</span>
+
+<span class="nc" id="L160">          System.out.println(&quot;Which way (n,s,e,w,u,d),&quot; +</span>
+			     &quot; or grab (g) or toss (t) an item,&quot; +
+			     &quot; or quit (q)?&quot; + '\n');
+<span class="nc" id="L163">          inputString = keyboard.readLine(); </span>
+<span class="nc" id="L164">	  System.out.println('\n');</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">	  if (inputString.equals(&quot;&quot;)) inputString = &quot; &quot;;</span>
+<span class="nc" id="L166">	  char key = inputString.charAt(0);</span>
+<span class="nc bnc" id="L167" title="All 4 branches missed.">	  switch (key){</span>
+	   // Go
+	     case 'n': case 'N': case 's': case 'S':
+	     case 'e': case 'E': case 'w': case 'W':
+	     case 'u': case 'U': case 'd': case 'D': 
+<span class="nc" id="L172">               direction = convertDirection(inputString);</span>
+<span class="nc" id="L173">	       String message = thePlayer.go(direction);</span>
+<span class="nc" id="L174">               System.out.println(message);</span>
+<span class="nc" id="L175">               break;</span>
+           // Grab Item
+	     case 'g': case 'G':
+<span class="nc bnc" id="L178" title="All 2 branches missed.">	       if (thePlayer.handsFull())</span>
+<span class="nc" id="L179">		  System.out.println(&quot;Your hands are full.&quot;);</span>
+<span class="nc bnc" id="L180" title="All 2 branches missed.">               else if ((thePlayer.getLoc()).roomEmpty())</span>
+<span class="nc" id="L181">                       System.out.println(&quot;The room is empty.&quot;); </span>
+		    else {
+<span class="nc" id="L183">	                 Item itemToGrab =</span>
+<span class="nc" id="L184">	         	     choosePickupItem(thePlayer,keyboard);  </span>
+<span class="nc" id="L185">	                 thePlayer.pickUp(itemToGrab);</span>
+<span class="nc" id="L186">	                 (thePlayer.getLoc()).removeItem(itemToGrab);</span>
+			 }
+<span class="nc" id="L188">	       break;</span>
+	   // Drop Item
+	      case 't': case 'T':
+<span class="nc bnc" id="L191" title="All 2 branches missed.">	      if (thePlayer.handsEmpty())</span>
+<span class="nc" id="L192">		 System.out.println(&quot;You have nothing to drop.&quot;);</span>
+              else {
+<span class="nc" id="L194">		    int itemToToss = </span>
+<span class="nc" id="L195">			 chooseDropItem(thePlayer,keyboard);</span>
+<span class="nc" id="L196">	            thePlayer.drop(itemToToss);</span>
+		   }
+           }
+<span class="nc" id="L199">	} </span>
+
+<span class="nc" id="L201">  }</span>
+
+
+public static void main(String args[])
+ throws IOException{
+<span class="nc" id="L206"> System.out.println(&quot;Welcome to the Adventure Game,\n&quot;</span>
+    + &quot;which is inspired by an old game called the Colossal Cave Adventure.\n&quot;
+    + &quot;Java implementation Copyright (c) 1999 - 2012 by James M. Bieman\n&quot; );
+<span class="nc" id="L209"> AdventureGame theGame = new AdventureGame();</span>
+<span class="nc" id="L210"> theGame.startQuest();</span>
+<span class="nc" id="L211"> }</span>
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>

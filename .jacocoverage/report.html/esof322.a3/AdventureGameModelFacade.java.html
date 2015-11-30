@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AdventureGameModelFacade.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JaCoCoverage analysis of project &quot;A3&quot; (powered by JaCoCo from EclEmma)</a> &gt; <a href="index.source.html" class="el_package">esof322.a3</a> &gt; <span class="el_source">AdventureGameModelFacade.java</span></div><h1>AdventureGameModelFacade.java</h1><pre class="source lang-java linenums">/*
+ * ESOF322, Project 2
+ * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
+ */
+ 
+package esof322.a3;
+
+import javax.swing.*;
+
+public class AdventureGameModelFacade {
+
+    // some private fields to reference current location,
+    // its description, what I'm carrying, etc.
+    //
+    // These methods and fields are left as exercises.
+    Player thePlayer;
+    Adventure theCave;
+    Room startRm;
+
+    /* 
+     * Method to initialize the game and interface
+     * 
+     * Implemented method
+     */
+<span class="nc" id="L25">    AdventureGameModelFacade() { </span>
+<span class="nc" id="L26">        thePlayer = new Player();</span>
+<span class="nc" id="L27">        theCave = new Adventure();</span>
+<span class="nc" id="L28">        startRm = theCave.createAdventure();</span>
+<span class="nc" id="L29">        thePlayer.setRoom(startRm);</span>
+<span class="nc" id="L30">    }</span>
+
+    /*
+     * Method to process a user 'up' input
+     * 
+     * Implemented and changed to String method
+     */
+    public String goUp() {
+<span class="nc" id="L38">        return thePlayer.go(4);</span>
+    }
+
+ /*
+     * Method to process a user 'down' input
+     * 
+     * Implemented and changed to String method
+     */
+    public String goDown() {
+<span class="nc" id="L47">        return thePlayer.go(5);</span>
+    }
+
+ /*
+     * Method to process a user 'north' input
+     * 
+     * Implemented and changed to String method
+     */
+    public String goNorth() {
+<span class="nc" id="L56">        return thePlayer.go(0);</span>
+    }
+
+ /*
+     * Method to process a user 'south' input
+     * 
+     * IImplemented and changed to String method
+     */
+    public String goSouth() {
+<span class="nc" id="L65">        return thePlayer.go(1);</span>
+    }
+
+ /*
+     * Method to process a user 'east' input
+     * 
+     * Implemented and changed to String method
+     */
+    public String goEast() {
+<span class="nc" id="L74">        return thePlayer.go(2);</span>
+    }
+
+ /*
+     * Method to process a user 'west' input
+     * 
+     * Implemented and changed to String method
+     */
+    public String goWest() {
+<span class="nc" id="L83">        return thePlayer.go(3);</span>
+    }
+
+ /*
+     * Method to process a user 'grab' input
+     * 
+     * Implemented method
+     */
+    public void grab() {
+<span class="nc" id="L92">        Item[] roomContents = thePlayer.getLoc().getRoomContents();</span>
+        
+        
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (roomContents.length == 0) { // if there is nothing in the room.</span>
+<span class="nc" id="L96">            final JFrame noItem = new JFrame();</span>
+<span class="nc" id="L97">            JOptionPane.showMessageDialog(noItem, &quot;There is nothing to pick up.&quot;);</span>
+<span class="nc" id="L98">            return;</span>
+        } 
+        // if there is something in the room:
+<span class="nc bnc" id="L101" title="All 2 branches missed.">            if (thePlayer.handsFull()) { // if your hands are full</span>
+<span class="nc" id="L102">                final JFrame fullHands = new JFrame();</span>
+<span class="nc" id="L103">                JOptionPane.showMessageDialog(fullHands, &quot;You cannot pick anything up, your hands are full.&quot;);</span>
+<span class="nc" id="L104">                return;</span>
+            }
+            // your hands are not full and there is something to pick up
+<span class="nc" id="L107">                final JFrame pickItem = new JFrame();</span>
+<span class="nc" id="L108">                Object[] choices = new Object[roomContents.length];</span>
+        
+                // Get room contents
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                for (int i = 0; i &lt; roomContents.length; i++) {</span>
+<span class="nc" id="L112">                    choices[i] = &quot;Pickup: &quot; + roomContents[i].getDesc();</span>
+                }
+                
+                // Offer user choice of items and get input
+<span class="nc" id="L116">                int n = JOptionPane.showOptionDialog(pickItem, &quot;Which Item would you like to pick up?&quot;, // text prompt</span>
+                        &quot;Item Choice Window&quot;, // window name
+                        JOptionPane.YES_NO_CANCEL_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        choices,// starting option
+                        choices[choices.length - 1]// ending option
+                );
+<span class="nc" id="L124">                thePlayer.pickUp(roomContents[n]);//grab the item, duh</span>
+<span class="nc" id="L125">    }</span>
+
+    public void drop() {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if (thePlayer.handsEmpty()) { // if there is nothing to drop.</span>
+<span class="nc" id="L129">            final JFrame noItem = new JFrame();</span>
+<span class="nc" id="L130">            JOptionPane.showMessageDialog(noItem, &quot;You have nothing to drop.&quot;);</span>
+<span class="nc" id="L131">            return; // Nothing to see here, move along</span>
+        } 
+        // If we have something to drop
+            
+<span class="nc" id="L135">            Item[] playerContents = thePlayer.getMyThings();</span>
+<span class="nc" id="L136">            final JFrame dropItem = new JFrame();</span>
+<span class="nc" id="L137">            Object[] choices = new Object[playerContents.length];</span>
+            
+            // Get inventory contents
+<span class="nc bnc" id="L140" title="All 2 branches missed.">            for (int i = 0; i &lt; playerContents.length; i++) {</span>
+<span class="nc" id="L141">                    choices[i] = &quot;Drop: &quot; + playerContents[i].getDesc();</span>
+                }
+            
+            // Offer user item options to drop and get their choice
+<span class="nc" id="L145">            int n = JOptionPane.showOptionDialog(dropItem, &quot;Which Item would you like to drop?&quot;, // text prompt</span>
+                    &quot;Item Choice Window&quot;, // window name
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    choices,// starting option
+                    choices[choices.length - 1]// ending option
+            );
+<span class="nc" id="L153">            thePlayer.drop(n + 1); // Drop it like it's hot</span>
+<span class="nc" id="L154">    }</span>
+
+    /* Method to retrieve the room description
+     *
+     * Implemented this method.
+     */
+    public String getView() {
+<span class="nc" id="L161">        return thePlayer.look();</span>
+    }
+
+    /* Method to retrieve the list of player's items
+     *
+     * Implemented this method.
+     */
+    public String getItems() {
+<span class="nc" id="L169">        return thePlayer.showMyThings();</span>
+    }
+
+ // Surely you will need other methods to deal with
+    // picking up and dropping things.
+    // Surely not.
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span></div></body></html>
