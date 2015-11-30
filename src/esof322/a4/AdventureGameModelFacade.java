@@ -3,7 +3,7 @@
  * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
  */
  
-package esof322.a3;
+package esof322.a4;
 
 import javax.swing.*;
 
@@ -14,7 +14,7 @@ public class AdventureGameModelFacade {
     //
     // These methods and fields are left as exercises.
     Player thePlayer;
-    Adventure theCave;
+    //Adventure theCave;
     Room startRm;
 
     /* 
@@ -22,10 +22,12 @@ public class AdventureGameModelFacade {
      * 
      * Implemented method
      */
-    AdventureGameModelFacade() { 
+    
+    // made facade take a factory object as well to know what Lvl of adventure to create
+    AdventureGameModelFacade(AdventureGameFactory f) { 
         thePlayer = new Player();
-        theCave = new Adventure();
-        startRm = theCave.createAdventure();
+        //theCave = new Adventure();
+        startRm = f.createLvl();
         thePlayer.setRoom(startRm);
     }
 

@@ -2,7 +2,7 @@
  * ESOF322, Project 2
  * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
  */
-package esof322.a3;
+package esof322.a4;
 
 
 /**  Adventure Game  Program Code
@@ -52,7 +52,7 @@ The main routine is AdventureGame.main
 		I/O is to and from the console. 
 
 */
-
+// this will take the factoy as an argument dont think i need this class anymore
 public class Adventure {
 
   private Room entrance;
@@ -60,6 +60,8 @@ public class Adventure {
   // Changed room description for room 9
   // Added an entry message for room 7
   public Room createAdventure(){
+      
+     // entrance = f.createLvl();
     // The outside: 
       Room  outside = new Room();
       outside.setDesc(

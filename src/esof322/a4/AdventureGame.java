@@ -3,7 +3,7 @@
  * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
  */
  
- package esof322.a3;
+ package esof322.a4;
 
 /**  Adventure Game  Program Code
      Copyright (c) 1999 James M. Bieman

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package esof322.a3;
+package esof322.a4;
 
+import esof322.a4.Item;
+import esof322.a4.Player;
+import esof322.a4.Room;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

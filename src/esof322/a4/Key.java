@@ -2,7 +2,7 @@
 * ESOF322, Project 2
 * Nicolas Moore, Dominik Pruss, Philip Wipf, James Soddy
 */
-package esof322.a3;
+package esof322.a4;
 
 
 /**  Adventure Game  Program Code
@@ -13,12 +13,11 @@ package esof322.a3;
 
      The main routine is AdventureGame.main
 				    
+**/
 
-				    **/
 
-// interface CaveSite
+// class Key.
 
-public interface CaveSite{
-  String enter(Player p);
+public class Key extends Item {
 }
 
