@@ -132,7 +132,7 @@ public class AdventureGameView extends GBFrame {
             "Level 1"};
         Component frame = null;
         int n = JOptionPane.showOptionDialog(frame,
-                "Choose which difficulty level you would like to play, or load a saved game ",
+                "Choose which difficulty level you would like to play",
                 "Select difficulty",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
